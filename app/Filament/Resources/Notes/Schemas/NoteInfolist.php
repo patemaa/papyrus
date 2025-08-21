@@ -16,41 +16,41 @@ class NoteInfolist
         return $schema
             ->schema([
                 Group::make([
-                    Section::make('Not Bilgileri')
+                    Section::make('Note Details')
                         ->schema([
                             Components\TextEntry::make('title')
-                                ->label('Başlık')
+                                ->label('Title')
                                 ->weight(FontWeight::Bold),
 
                             Components\TextEntry::make('excerpt')
-                                ->label('Özet')
+                                ->label('Summary')
                                 ->prose(),
 
                             Components\TextEntry::make('content')
-                                ->label('İçerik')
+                                ->label('Content')
                                 ->html()
                                 ->prose()
                                 ->columnSpanFull(),
                         ])
                         ->columns(2),
 
-                    Section::make('İstatistikler')
+                    Section::make('Statistics')
                         ->schema([
                             Components\TextEntry::make('word_count')
-                                ->label('Kelime Sayısı'),
+                                ->label('Word Count'),
 
                             Components\TextEntry::make('reading_time')
-                                ->label('Okuma Süresi'),
+                                ->label('Reading Time'),
                         ])
                         ->columns(2),
                 ])
                     ->columnSpan(2),
 
                 Group::make([
-                    Section::make('Durum ve Özellikler')
+                    Section::make('Status and Characteristics')
                         ->schema([
                             Components\TextEntry::make('status')
-                                ->label('Durum')
+                                ->label('Status')
                                 ->badge()
                                 ->color(fn (string $state): string => match ($state) {
                                     'draft' => 'secondary',
@@ -58,13 +58,13 @@ class NoteInfolist
                                     'archived' => 'warning',
                                 })
                                 ->formatStateUsing(fn (string $state): string => match ($state) {
-                                    'draft' => 'Taslak',
-                                    'published' => 'Yayınlandı',
-                                    'archived' => 'Arşivlendi',
+                                    'draft' => 'Draft',
+                                    'published' => 'Published',
+                                    'archived' => 'Archived',
                                 }),
 
                             Components\TextEntry::make('priority')
-                                ->label('Öncelik')
+                                ->label('Priority')
                                 ->badge()
                                 ->color(fn (string $state): string => match ($state) {
                                     'low' => 'success',
@@ -73,48 +73,48 @@ class NoteInfolist
                                     'urgent' => 'primary',
                                 })
                                 ->formatStateUsing(fn (string $state): string => match ($state) {
-                                    'low' => 'Düşük',
-                                    'medium' => 'Orta',
-                                    'high' => 'Yüksek',
-                                    'urgent' => 'Acil',
+                                    'low' => 'Low',
+                                    'medium' => 'Medium',
+                                    'high' => 'High',
+                                    'urgent' => 'Urgent',
                                 }),
 
                             Components\IconEntry::make('is_pinned')
-                                ->label('Sabitlenmiş')
+                                ->label('Pin')
                                 ->boolean()
-                                ->trueIcon('heroicon-o-thumb-tack')
+                                ->trueIcon('heroicon-o-academic-cap')
                                 ->trueColor('warning'),
 
                             Components\IconEntry::make('is_favorite')
-                                ->label('Favori')
+                                ->label('Favorite')
                                 ->boolean()
                                 ->trueIcon('heroicon-o-heart')
                                 ->trueColor('danger'),
                         ]),
 
-                    Section::make('İlişkiler')
+                    Section::make('Relations')
                         ->schema([
                             Components\TextEntry::make('user.name')
-                                ->label('Yazar'),
+                                ->label('Author'),
 
                             Components\TextEntry::make('category.name')
-                                ->label('Kategori')
+                                ->label('Category')
                                 ->badge()
                                 ->color(fn (Note $record): string => $record->category?->color ?? 'gray'),
                         ]),
 
-                    Section::make('Tarihler')
+                    Section::make('Dates')
                         ->schema([
                             Components\TextEntry::make('published_at')
-                                ->label('Yayın Tarihi')
+                                ->label('Published At')
                                 ->dateTime('d.m.Y H:i'),
 
                             Components\TextEntry::make('created_at')
-                                ->label('Oluşturulma')
+                                ->label('Created At')
                                 ->dateTime('d.m.Y H:i'),
 
                             Components\TextEntry::make('updated_at')
-                                ->label('Güncellenme')
+                                ->label('Updated At')
                                 ->dateTime('d.m.Y H:i'),
                         ]),
                 ])

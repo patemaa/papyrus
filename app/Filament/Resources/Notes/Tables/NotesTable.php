@@ -25,6 +25,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Illuminate\Support\Str;
 
 class NotesTable
 {
@@ -33,34 +34,34 @@ class NotesTable
         return $table
             ->columns([
                 SpatieMediaLibraryImageColumn::make('featured_image')
-                    ->label('Görsel')
+                    ->label('Featured Image')
                     ->collection('featured_image')
                     ->conversion('thumb')
                     ->size(60)
                     ->circular(),
 
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Başlık')
+                    ->label('Title')
                     ->searchable()
                     ->sortable()
                     ->weight(FontWeight::Bold)
-                    ->description(fn (Note $record): string => \Str::limit($record->excerpt ?? '', 50)),
+                    ->description(fn (Note $record): string => Str::limit($record->excerpt ?? '', 50)),
 
                 Tables\Columns\BadgeColumn::make('status')
-                    ->label('Durum')
+                    ->label('Status')
                     ->colors([
                         'secondary' => 'draft',
                         'success' => 'published',
                         'warning' => 'archived',
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'draft' => 'Taslak',
-                        'published' => 'Yayınlandı',
-                        'archived' => 'Arşivlendi',
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        'archived' => 'Archived',
                     }),
 
                 Tables\Columns\BadgeColumn::make('priority')
-                    ->label('Öncelik')
+                    ->label('Priority')
                     ->colors([
                         'success' => 'low',
                         'warning' => 'medium',
@@ -68,28 +69,28 @@ class NotesTable
                         'primary' => 'urgent',
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'low' => 'Düşük',
-                        'medium' => 'Orta',
-                        'high' => 'Yüksek',
-                        'urgent' => 'Acil',
+                        'low' => 'Low',
+                        'medium' => 'Medium',
+                        'high' => 'High',
+                        'urgent' => 'Urgent',
                     }),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Kategori')
+                    ->label('Category')
                     ->sortable()
                     ->badge()
                     ->color(fn (Note $record): string => $record->category?->color ?? 'gray'),
 
                 Tables\Columns\IconColumn::make('is_pinned')
-                    ->label('Sabitlenmiş')
+                    ->label('Pinned')
                     ->boolean()
-                    ->trueIcon('heroicon-o-thumb-tack')
-                    ->falseIcon('heroicon-o-thumb-tack')
+                    ->trueIcon('heroicon-o-academic-cap')
+                    ->falseIcon('heroicon-o-academic-cap')
                     ->trueColor('warning')
                     ->falseColor('gray'),
 
                 Tables\Columns\IconColumn::make('is_favorite')
-                    ->label('Favori')
+                    ->label('Favorited')
                     ->boolean()
                     ->trueIcon('heroicon-o-heart')
                     ->falseIcon('heroicon-o-heart')
@@ -97,73 +98,73 @@ class NotesTable
                     ->falseColor('gray'),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Yazar')
+                    ->label('Author')
                     ->sortable()
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('word_count')
-                    ->label('Kelime Sayısı')
+                    ->label('Word Count')
                     ->alignEnd()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('reading_time')
-                    ->label('Okuma Süresi')
+                    ->label('Reading Time')
                     ->alignEnd(),
 
                 Tables\Columns\TextColumn::make('published_at')
-                    ->label('Yayın Tarihi')
+                    ->label('Published At')
                     ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Oluşturulma')
+                    ->label('Created At')
                     ->dateTime('d.m.Y H:i')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Durum')
+                    ->label('Status')
                     ->options([
-                        'draft' => 'Taslak',
-                        'published' => 'Yayınlandı',
-                        'archived' => 'Arşivlendi',
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        'archived' => 'Archived',
                     ])
                     ->multiple(),
 
                 Tables\Filters\SelectFilter::make('priority')
-                    ->label('Öncelik')
+                    ->label('Priority')
                     ->options([
-                        'low' => 'Düşük',
-                        'medium' => 'Orta',
-                        'high' => 'Yüksek',
-                        'urgent' => 'Acil',
+                        'low' => 'Low',
+                        'medium' => 'Medium',
+                        'high' => 'High',
+                        'urgent' => 'Urgent',
                     ])
                     ->multiple(),
 
                 Tables\Filters\SelectFilter::make('category')
-                    ->label('Kategori')
+                    ->label('Category')
                     ->relationship('category', 'name')
                     ->multiple()
                     ->preload(),
 
                 Tables\Filters\Filter::make('is_pinned')
-                    ->label('Sabitlenmiş')
+                    ->label('Pinned')
                     ->query(fn (Builder $query): Builder => $query->where('is_pinned', true)),
 
                 Tables\Filters\Filter::make('is_favorite')
-                    ->label('Favori')
+                    ->label('Favorited')
                     ->query(fn (Builder $query): Builder => $query->where('is_favorite', true)),
 
                 Tables\Filters\Filter::make('created_at')
-                    ->label('Oluşturulma Tarihi')
+                    ->label('Created At')
                     ->form([
                         DatePicker::make('created_from')
-                            ->label('Başlangıç')
+                            ->label('Started At')
                             ->placeholder('dd.mm.yyyy'),
                         DatePicker::make('created_until')
-                            ->label('Bitiş')
+                            ->label('Ended At')
                             ->placeholder('dd.mm.yyyy'),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
@@ -179,7 +180,7 @@ class NotesTable
                     }),
 
                 TrashedFilter::make()
-                    ->label('Silinmiş Kayıtlar'),
+                    ->label('Deleted Records'),
             ], layout: FiltersLayout::AboveContent)
             ->filtersFormColumns(3)
             ->actions([
@@ -187,12 +188,12 @@ class NotesTable
                     ViewAction::make(),
                     EditAction::make(),
                     Action::make('toggle_pin')
-                        ->label(fn (Note $record): string => $record->is_pinned ? 'Sabitlemeyi Kaldır' : 'Sabitle')
-                        ->icon(fn (Note $record): string => $record->is_pinned ? 'heroicon-o-thumb-tack' : 'heroicon-s-thumb-tack')
+                        ->label(fn (Note $record): string => $record->is_pinned ? 'Unpin' : 'Pin')
+                        ->icon(fn (Note $record): string => $record->is_pinned ? 'heroicon-o-academic-cap' : 'heroicon-s-academic-cap')
                         ->color(fn (Note $record): string => $record->is_pinned ? 'warning' : 'gray')
                         ->action(fn (Note $record) => $record->update(['is_pinned' => !$record->is_pinned])),
                     Action::make('toggle_favorite')
-                        ->label(fn (Note $record): string => $record->is_favorite ? 'Favorilerden Çıkar' : 'Favorilere Ekle')
+                        ->label(fn (Note $record): string => $record->is_favorite ? 'Add to Favorites' : 'Remove From Favorites')
                         ->icon(fn (Note $record): string => $record->is_favorite ? 'heroicon-s-heart' : 'heroicon-o-heart')
                         ->color(fn (Note $record): string => $record->is_favorite ? 'danger' : 'gray')
                         ->action(fn (Note $record) => $record->update(['is_favorite' => !$record->is_favorite])),
@@ -204,15 +205,15 @@ class NotesTable
             ->bulkActions([
                 BulkActionGroup::make([
                     BulkAction::make('change_status')
-                        ->label('Durum Değiştir')
+                        ->label('Change Status')
                         ->icon('heroicon-o-arrow-path')
                         ->form([
                             Select::make('status')
-                                ->label('Yeni Durum')
+                                ->label('New Status')
                                 ->options([
-                                    'draft' => 'Taslak',
-                                    'published' => 'Yayınlandı',
-                                    'archived' => 'Arşivlendi',
+                                    'draft' => 'Draft',
+                                    'published' => 'Published',
+                                    'archived' => 'Archived',
                                 ])
                                 ->required(),
                         ])
@@ -220,11 +221,11 @@ class NotesTable
                             $records->each->update(['status' => $data['status']]);
                         }),
                     BulkAction::make('change_category')
-                        ->label('Kategori Değiştir')
+                        ->label('Cahnge Category')
                         ->icon('heroicon-o-folder')
                         ->form([
                             Select::make('category_id')
-                                ->label('Yeni Kategori')
+                                ->label('New Category')
                                 ->options(Category::active()->pluck('name', 'id'))
                                 ->required(),
                         ])

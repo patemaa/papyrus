@@ -19,10 +19,10 @@ class NoteForm
             ->schema([
                 Group::make()
                     ->schema([
-                        Section::make('Not Bilgileri')
+                        Section::make('Note Information')
                             ->schema([
                                 Components\TextInput::make('title')
-                                    ->label('Başlık')
+                                    ->label('Title')
                                     ->required()
                                     ->maxLength(255)
                                     ->live(onBlur: true)
@@ -33,35 +33,42 @@ class NoteForm
                                     }),
 
                                 Components\Textarea::make('excerpt')
-                                    ->label('Özet')
+                                    ->label('Summary')
                                     ->rows(3)
                                     ->maxLength(500)
-                                    ->helperText('Notun kısa özeti (maksimum 500 karakter)'),
+                                    ->helperText('Note Summary (max 500 characters)'),
 
                                 Components\RichEditor::make('content')
-                                    ->label('İçerik')
+                                    ->label('Content')
                                     ->required()
                                     ->columnSpanFull()
                                     ->fileAttachmentsDirectory('note-attachments')
                                     ->toolbarButtons([
-                                        'attachFiles',
-                                        'blockquote',
-                                        'bold',
-                                        'bulletList',
-                                        'codeBlock',
-                                        'h2',
-                                        'h3',
-                                        'italic',
-                                        'link',
-                                        'orderedList',
-                                        'redo',
-                                        'strike',
-                                        'table',
-                                        'undo',
+                                        [
+                                            'h1',
+                                            'h2',
+                                            'h3',
+                                            'bold',
+                                            'italic',
+                                            'underline',
+                                            'strike',
+                                            'highlight',
+                                            'superscript',
+                                            'subscript',
+                                            'code',
+                                            'bulletList',
+                                            'orderedList',
+                                            'table',
+                                            'link',
+                                            'attachFiles',
+                                            'redo',
+                                            'undo',
+                                            'clearFormatting',
+                                        ]
                                     ]),
 
                                 SpatieTagsInput::make('tags')
-                                    ->label('Etiketler')
+                                    ->label('Tags')
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
@@ -69,7 +76,7 @@ class NoteForm
                         Section::make('Medya')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('featured_image')
-                                    ->label('Öne Çıkan Görsel')
+                                    ->label('Featured Image')
                                     ->collection('featured_image')
                                     ->image()
                                     ->imageEditor()
@@ -78,7 +85,7 @@ class NoteForm
                                     ->imageResizeTargetHeight('1080'),
 
                                 SpatieMediaLibraryFileUpload::make('attachments')
-                                    ->label('Ekler')
+                                    ->label('Attachments')
                                     ->collection('attachments')
                                     ->multiple()
                                     ->reorderable()
@@ -91,64 +98,64 @@ class NoteForm
 
                 Group::make()
                     ->schema([
-                        Section::make('Durum')
+                        Section::make('Status')
                             ->schema([
                                 Components\Select::make('status')
-                                    ->label('Durum')
+                                    ->label('Status')
                                     ->options([
-                                        'draft' => 'Taslak',
-                                        'published' => 'Yayınlandı',
-                                        'archived' => 'Arşivlendi',
+                                        'draft' => 'Draft',
+                                        'published' => 'Published',
+                                        'archived' => 'Arvhived',
                                     ])
                                     ->default('draft')
                                     ->required()
                                     ->native(false),
 
                                 Components\Select::make('priority')
-                                    ->label('Öncelik')
+                                    ->label('Priority')
                                     ->options([
-                                        'low' => 'Düşük',
-                                        'medium' => 'Orta',
-                                        'high' => 'Yüksek',
-                                        'urgent' => 'Acil',
+                                        'low' => 'Low',
+                                        'medium' => 'Medium',
+                                        'high' => 'High',
+                                        'urgent' => 'Urgent',
                                     ])
                                     ->default('medium')
                                     ->required()
                                     ->native(false),
 
                                 Components\Toggle::make('is_pinned')
-                                    ->label('Sabitlenmiş'),
+                                    ->label('Pinned'),
 
                                 Components\Toggle::make('is_favorite')
-                                    ->label('Favori'),
+                                    ->label('Favorite'),
 
                                 Components\DateTimePicker::make('published_at')
-                                    ->label('Yayın Tarihi')
+                                    ->label('Published At')
                                     ->native(false),
                             ]),
 
-                        Section::make('Organizasyon')
+                        Section::make('Organisation')
                             ->schema([
                                 Components\Select::make('category_id')
-                                    ->label('Kategori')
+                                    ->label('Category')
                                     ->options(Category::active()->ordered()->pluck('name', 'id'))
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
                                         Components\TextInput::make('name')
-                                            ->label('Kategori Adı')
+                                            ->label('Category Name')
                                             ->required()
                                             ->maxLength(255),
                                         Components\Textarea::make('description')
-                                            ->label('Açıklama')
+                                            ->label('Description')
                                             ->rows(3),
                                         Components\ColorPicker::make('color')
-                                            ->label('Renk')
+                                            ->label('Color')
                                             ->default('#6366f1'),
                                     ]),
 
                                 Components\Select::make('user_id')
-                                    ->label('Yazar')
+                                    ->label('Author')
                                     ->relationship('user', 'name')
                                     ->default(auth()->id())
                                     ->required()
@@ -159,9 +166,9 @@ class NoteForm
                         Section::make('Metadata')
                             ->schema([
                                 Components\KeyValue::make('metadata')
-                                    ->label('Ek Bilgiler')
-                                    ->keyLabel('Anahtar')
-                                    ->valueLabel('Değer')
+                                    ->label('Additional Information')
+                                    ->keyLabel('Key')
+                                    ->valueLabel('Value')
                                     ->reorderable(),
                             ]),
                     ])

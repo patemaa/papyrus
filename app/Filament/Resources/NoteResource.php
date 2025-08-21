@@ -17,7 +17,7 @@ class NoteResource extends Resource
 {
 
     protected static ?string $model = Note::class;
-    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-document-text';
+    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?string $navigationLabel = 'Notes';
     protected static ?string $modelLabel = 'Note';
     protected static ?string $pluralModelLabel = 'Notes';
