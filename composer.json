@@ -8,6 +8,8 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "^4.0",
+        "filament/forms": "^4.0",
+        "filament/infolists": "^4.0",
         "filament/spatie-laravel-media-library-plugin": "^4.0",
         "filament/spatie-laravel-tags-plugin": "^4.0",
         "laravel/framework": "^12.0",
@@ -17,6 +19,7 @@
         "spatie/laravel-tags": "^4.10"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "*",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
