@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 
 class NotesChart extends ChartWidget
 {
-    protected ?string $heading = 'Not Oluşturma Trendi';
+    protected ?string $heading = 'Created Notes';
     protected static ?int $sort = 2;
     protected int|string|array $columnSpan = 'full';
 
@@ -35,12 +35,11 @@ class NotesChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Oluşturulan Notlar',
+                    'label' => 'Created Notes',
                     'data' => $values,
-                    'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
-                    'borderColor' => 'rgb(59, 130, 246)',
                     'borderWidth' => 2,
                     'fill' => true,
+                    'pointRadius' => 4  ,
                 ],
             ],
             'labels' => $labels,
