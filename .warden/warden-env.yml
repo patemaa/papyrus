@@ -1,0 +1,34 @@
+services:
+  php-fpm:
+    volumes:
+      - ~/.ssh:/home/www-data/.ssh
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - papyrus.test:${TRAEFIK_ADDRESS:-0.0.0.0}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${WARDEN_ENV_NAME}-vite.tls=true
+      - traefik.http.routers.${WARDEN_ENV_NAME}-vite.priority=3
+      - traefik.http.routers.${WARDEN_ENV_NAME}-vite.rule=Host(`vite.${TRAEFIK_DOMAIN}`)
+      - traefik.http.routers.${WARDEN_ENV_NAME}-vite.service=${WARDEN_ENV_NAME}-vite
+      - traefik.http.services.${WARDEN_ENV_NAME}-vite.loadbalancer.server.port=5173
+      # Laravel Octane için 8000 portu
+      - traefik.http.routers.${WARDEN_ENV_NAME}-octane.tls=true
+      - traefik.http.routers.${WARDEN_ENV_NAME}-octane.priority=2
+      - traefik.http.routers.${WARDEN_ENV_NAME}-octane.rule=Host(`octane.${TRAEFIK_DOMAIN}`)
+      - traefik.http.routers.${WARDEN_ENV_NAME}-octane.service=${WARDEN_ENV_NAME}-octane
+      - traefik.http.services.${WARDEN_ENV_NAME}-octane.loadbalancer.server.port=8000
+      - traefik.docker.network=${WARDEN_ENV_NAME}_default
+  db:
+    command:
+      - mysqld
+      - --max_allowed_packet=1024M #it needed while importing from prod to local
+  nginx:
+    volumes:
+      - ./.warden/nginx/conf.d/custom.conf:/etc/nginx/conf.d/custom.conf
+    labels:
+      - traefik.http.routers.${WARDEN_ENV_NAME}-nginx.rule=
+        HostRegexp(`{subdomain:.+}.${TRAEFIK_DOMAIN}`)
+        || Host(`${TRAEFIK_DOMAIN}`)
+        || HostRegexp(`{subdomain:.+}.wallhuebagisto.test`)
+        || Host(`wallhuebagisto.test`)
