@@ -73,7 +73,7 @@ class NoteForm
                             ])
                             ->columns(2),
 
-                        Section::make('Medya')
+                        Section::make('Media')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('featured_image')
                                     ->label('Featured Image')

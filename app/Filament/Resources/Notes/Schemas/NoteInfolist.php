@@ -8,6 +8,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
 use Filament\Infolists\Components;
 use Filament\Schemas\Components\Section;
+use Illuminate\Support\Str;
 
 class NoteInfolist
 {
@@ -82,7 +83,7 @@ class NoteInfolist
                             Components\IconEntry::make('is_pinned')
                                 ->label('Pin')
                                 ->boolean()
-                                ->trueIcon('heroicon-o-academic-cap')
+                                ->trueIcon('heroicon-o-paper-clip')
                                 ->trueColor('warning'),
 
                             Components\IconEntry::make('is_favorite')
@@ -99,8 +100,11 @@ class NoteInfolist
 
                             Components\TextEntry::make('category.name')
                                 ->label('Category')
-                                ->badge()
-                                ->color(fn (Note $record): string => $record->category?->color ?? 'gray'),
+                                ->formatStateUsing(function (Note $record) {
+                                    $color = $record->category?->color ?? '#6b7280';
+                                    return "<span style='background-color: {$color}; color: #fff; padding: 4px 8px; border-radius: 5px;'>{$record->category?->name}</span>";
+                                })
+                                ->html(),
                         ]),
 
                     Section::make('Dates')

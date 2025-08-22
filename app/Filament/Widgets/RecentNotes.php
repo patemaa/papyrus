@@ -10,9 +10,10 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class RecentNotes extends BaseWidget
 {
-    protected static ?string $heading = 'Son Notlar';
-    protected int | string | array $columnSpan = 'full';
+    protected static ?string $heading = 'Recent Notes';
+    protected int | string | array $columnSpan = 2;
     protected static ?int $sort = 3;
+
 
     public function table(Table $table): Table
     {
@@ -25,37 +26,37 @@ class RecentNotes extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Başlık')
+                    ->label('Title')
                     ->limit(50)
                     ->searchable(),
 
                 Tables\Columns\BadgeColumn::make('status')
-                    ->label('Durum')
+                    ->label('Status')
                     ->colors([
                         'secondary' => 'draft',
                         'success' => 'published',
                         'warning' => 'archived',
                     ])
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'draft' => 'Taslak',
-                        'published' => 'Yayınlandı',
-                        'archived' => 'Arşivlendi',
+                        'draft' => 'Draft',
+                        'published' => 'Published',
+                        'archived' => 'Archived',
                     }),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Yazar'),
+                    ->label('Author'),
 
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Kategori')
+                    ->label('Category')
                     ->badge(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Oluşturulma')
+                    ->label('Created At')
                     ->since(),
             ])
             ->actions([
                 Action::make('view')
-                    ->label('Görüntüle')
+                    ->label('View')
                     ->icon('heroicon-o-eye')
                     ->url(fn (Note $record): string => route('filament.admin.resources.notes.view', $record)),
             ]);

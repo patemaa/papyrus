@@ -10,9 +10,9 @@ class Analytics extends Page
 {
     protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-chart-bar';
     protected string $view = 'filament.pages.analytics';
-    protected static ?string $navigationLabel = 'Analitik';
+    protected static ?string $navigationLabel = 'Analytics';
     protected static ?int $navigationSort = 10;
-    protected static string|null|\UnitEnum $navigationGroup = 'Raporlar';
+    protected static string|null|\UnitEnum $navigationGroup = 'Reports';
 
     public function getViewData(): array
     {

@@ -12,8 +12,7 @@ class NotesChart extends ChartWidget
 {
     protected ?string $heading = 'Created Notes';
     protected static ?int $sort = 2;
-    protected int|string|array $columnSpan = 'full';
-
+    protected int | string | array $columnSpan = 2;
     protected function getData(): array
     {
         $points = Trend::model(Note::class)

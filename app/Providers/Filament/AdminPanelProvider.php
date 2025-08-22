@@ -13,8 +13,6 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -32,7 +30,29 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Teal,
+                'gray' => Color::Gray,
+                'blue' => Color::Blue,
+                'red' => Color::Red,
+                'yellow' => Color::Yellow,
+                'orange' => Color::Orange,
+                'purple' => Color::Purple,
+                'cyan' => Color::Cyan,
+                'teal' => Color::Teal,
+                'pink' => Color::Pink,
+                'slate' => Color::Slate,
+                'zinc' => Color::Zinc,
+                'neutral' => Color::Neutral,
+                'stone' => Color::Stone,
+                'amber' => Color::Amber,
+                'lime' => Color::Lime,
+                'green' => Color::Green,
+                'emerald' => Color::Emerald,
+                'sky' => Color::Sky,
+                'indigo' => Color::Indigo,
+                'violet' => Color::Violet,
+                'fuchsia' => Color::Fuchsia,
+                'rose' => Color::Rose,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
